@@ -2,7 +2,7 @@ import pygame
 from consts import colors
 
 class Skill:
-    def __init__(self, name, prerequisites, x, y, completed=False, icon=False, icon_size=18, icon_color=(128, 128, 128)):
+    def __init__(self, name, prerequisites, x, y, completed=False, icon=False, icon_size=18, icon_color=colors["grey_text"], locked=True):
         self.name = name
 
         # List of prerequisites skill NAMES
@@ -16,10 +16,10 @@ class Skill:
 
         self.color = colors["grey_bg"]
         self.border_color = colors["grey_text"]
-        self.radius = 20
+        self.radius = 30
 
         self.completed = completed
-        self.locked = True
+        self.locked = locked
 
         self.font = pygame.font.Font(None, 24)
         self.text = self.font.render(self.name, True, (255, 255, 255))
@@ -32,6 +32,10 @@ class Skill:
     
     def unlock(self):
         self.locked = False
+    
+    def complete(self):
+        self.completed = True
+        self.border_color = colors["neon_green"]
     
     def draw(self, screen):
         # Background
@@ -70,14 +74,14 @@ class Skill:
         ))
     
     def check_prerequisites(self, skills):
-        #TODO: Check if all prerequisites are unlocked
-        for skill in skills:
-            #Remains true unless any prerequisite is incomplete.
-            tempStatusBool = True
-            for prereq_name in skill.prerequisites:
-                prereq_skill = skills.get(prereq_name)
-                if prereq_skill.completed == False:
-                    tempStatusBool = False
-            if tempStatusBool:
-                skill.unlock()
-        pass
+        # Check if all prerequisites are completed to unlock this skill
+        for skill_name in skills:
+            prerequisite_completed = True
+            for prerequisite in self.prerequisites:
+                if not skills[prerequisite].completed:
+                    prerequisite_completed = False
+                    break
+            if prerequisite_completed:
+                self.locked = False
+                return False
+        return True

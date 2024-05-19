@@ -10,7 +10,7 @@ class Button:
         
         self.font = pygame.font.Font(None, text_size)
         self.text = self.font.render(text, True, text_color)
-        self.icon = False
+        self.icon = icon
         self.index = index
 
         self.immutable_size = immutable_size
@@ -68,12 +68,6 @@ class Button:
             self.x = mouse[0] - self.width // 2
             self.y = mouse[1] - self.height // 2
 
-        if self.icon != False:
-            # Icon (if any) is a loaded pygame image
-            icon_rect = self.icon.get_rect()
-            icon = pygame.transform.scale(self.icon, (icon_rect.width // 2, icon_rect.height // 2))
-        
-
         # Rectangle
         self.rectangle = pygame.draw.rect(
             surface=screen,
@@ -90,14 +84,15 @@ class Button:
             width=self.border_width,
             border_radius=self.radius
         )
-
         
-        #icon
         if self.icon != False:
+            # Icon (if any) is a loaded pygame image
+            icon_rect = self.icon.get_rect()
+            self.icon = pygame.transform.scale(self.icon, (icon_rect.width // 2, icon_rect.height // 2))
             screen.blit(self.icon, (
                 self.x - self.icon.get_width() // 2,
                 self.y - self.icon.get_height() // 2
-                ))
+            ))
 
         # Text
         screen.blit(self.text, (
