@@ -379,11 +379,14 @@ def skill_tree():
 
     # Draw lines connecting the skills
     # Binary Conversion -> Multiple Choice
-    pygame.draw.line(screen, colors["grey_text"], (cos[0] - 75, cos[1] - 135), (cos[0] + 75, cos[1] - 70), 2)
+    color1 = colors["red"] if skills["Multiple Choice"].locked else colors["neon_green"]
+    pygame.draw.line(screen, color1, (cos[0] - 75, cos[1] - 135), (cos[0] + 75, cos[1] - 70), 2)
     # Multiple Choice -> Fill in the blank
-    pygame.draw.line(screen, colors["grey_text"], (cos[0] + 75, cos[1] - 70), (cos[0] - 75, cos[1] + 15), 2)
+    color2 = colors["red"] if skills["Fill in the blank"].locked else colors["neon_green"]
+    pygame.draw.line(screen, color2, (cos[0] + 75, cos[1] - 70), (cos[0] - 75, cos[1] + 15), 2)
     # Fill in the blank -> Binary Search
-    pygame.draw.line(screen, colors["grey_text"], (cos[0] - 75, cos[1] + 15), (cos[0] + 75, cos[1] + 90), 2)
+    color3 = colors["red"] if skills["Binary Search"].locked else colors["neon_green"]
+    pygame.draw.line(screen, color3, (cos[0] - 75, cos[1] + 15), (cos[0] + 75, cos[1] + 90), 2)
 
     for skill in skills.values():
         skill.draw(screen)
