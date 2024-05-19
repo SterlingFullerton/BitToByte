@@ -207,6 +207,163 @@ fb_buttons = {
             immutable_size=True
         ),
 }
+
+robs_buttons = {
+    "Button1":
+        Button(
+            x=23,
+            y=60,
+            text="1",
+            text_size=24,
+            width=110,
+            height=125,
+            rounded=True,
+            radius=10,
+            border=True,
+            border_width=2,
+            padding=30,
+            icon = images['eyeClosed'],
+            index = 0,
+            immutable_size=True
+        ),
+    "Button2":
+        Button(
+            x=151,
+            y=60,
+            text="2",
+            text_size=24,
+            width=110,
+            height=125,
+            rounded=True,
+            radius=10,
+            border=True,
+            border_width=2,
+            padding=30,
+            icon = images['eyeClosed'],
+            index = 1,
+            immutable_size=True
+        ),
+    "Button3":
+        Button(
+            x=280,
+            y=60,
+            text="3",
+            text_size=24,
+            width=110,
+            height=125,
+            rounded=True,
+            radius=10,
+            border=True,
+            border_width=2,
+            padding=30,
+            icon = images['eyeClosed'],
+            index = 2,
+            immutable_size=True
+        ),
+    "Button4":
+        Button(
+            x=23,
+            y=205,
+            text="4",
+            text_size=24,
+            width=110,
+            height=125,
+            rounded=True,
+            radius=10,
+            border=True,
+            border_width=2,
+            padding=30,
+            icon = images['eyeClosed'],
+            index = 3,
+            immutable_size=True
+        ),
+    "Button5":
+        Button(
+            x=151,
+            y=205,
+            text="5",
+            text_size=24,
+            width=110,
+            height=125,
+            rounded=True,
+            radius=10,
+            border=True,
+            border_width=2,
+            padding=30,
+            icon = images['eyeClosed'],
+            index = 4,
+            immutable_size=True
+        ),
+    "Button6":
+        Button(
+            x=280,
+            y=205,
+            text="6",
+            text_size=24,
+            width=110,
+            height=125,
+            rounded=True,
+            radius=10,
+            border=True,
+            border_width=2,
+            padding=30,
+            icon = images['eyeClosed'],
+            index = 5,
+            immutable_size=True
+        ),
+    "Button7":
+        Button(
+            x=23,
+            y=350,
+            text="7",
+            text_size=24,
+            width=110,
+            height=125,
+            rounded=True,
+            radius=10,
+            border=True,
+            border_width=2,
+            padding=30,
+            icon = images['eyeClosed'],
+            index = 6,
+            immutable_size=True
+        ),
+    "Button8":
+        Button(
+            x=151,
+            y=350,
+            text="8",
+            text_size=24,
+            width=110,
+            height=125,
+            rounded=True,
+            radius=10,
+            border=True,
+            border_width=2,
+            padding=30,
+            icon = images['eyeClosed'],
+            index = 7,
+            immutable_size=True
+        ),
+    "Button9":
+        Button(
+            x=280,
+            y=350,
+            text="9",
+            text_size=24,
+            width=110,
+            height=125,
+            rounded=True,
+            radius=10,
+            border=True,
+            border_width=2,
+            padding=30,
+            icon = images['eyeClosed'],
+            index = 8,
+            immutable_size=True
+        ),
+}
+
 b1 = Button(
     x=screen_width // 2,
     y=screen_height // 2,
@@ -277,7 +434,7 @@ def skill_tree():
 
         questionNum = 1 #random.randint(0,1)
         if click_button(skill.circle):
-            current_screen = all_questions[questionNum][0]
+            current_screen = "robs_searching_scheme" #all_questions[questionNum][0]
             question = all_questions[questionNum][1]
             answers = [all_questions[questionNum][2],all_questions[questionNum][3],all_questions[questionNum][4],all_questions[questionNum][5]]
             correct_answer = all_questions[questionNum][6]
@@ -364,13 +521,26 @@ def multiple_choice():
     pass
 
 
-def tower_of_terry():
+def robs_searching_scheme():
+    global cards
+    if last_screen != "robs_searching_scheme":
+        cards = [0] * 9
+        #Generate random cards with no duplicates.
+        for card in cards:
+            tempInt = random.randint(1,50)
+            while cards.count(tempInt) > 0:
+                tempInt = random.randint(1,50)
+            card = tempInt
+        cards.sort()
     
-    pass
+    for button in robs_buttons.values():
+        # Draw the buttons
+        button.draw(screen)
 
-
-def robs_sorting_scheme():
-
+        if click_button(button.rectangle):
+            button.setNewText(str(cards[button.index]))
+            button.bg_color = colors['white']
+    
     pass
 
 
@@ -430,6 +600,9 @@ while running:
     elif current_screen == "multiple_choice":
         multiple_choice()
         last_screen = "multiple_choice"
+    elif current_screen == "robs_searching_scheme":
+        robs_searching_scheme()
+        last_screen = "robs_searching_scheme"
     else:
         print("Invalid Screen")
         exit()
