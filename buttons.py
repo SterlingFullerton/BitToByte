@@ -6,7 +6,7 @@ class Button:
             width=None, height=None,
             bg_color=colors["grey_bg"], text_color=colors["grey_text"], \
             rounded=False, radius=10, border=False, border_color=colors["grey_text"], \
-            border_width=1, padding=30, immutable_size=False):
+            border_width=1, padding=30, immutable_size=False, immutable_pos=False):
         
         self.font = pygame.font.Font(None, text_size)
         self.text = self.font.render(text, True, text_color)
@@ -27,6 +27,7 @@ class Button:
         self.border_color = border_color
         self.border_width = border_width
         self.padding = padding
+        self.immutable_pos = immutable_pos
 
         self.attached_to_mouse = False
 
@@ -41,8 +42,9 @@ class Button:
             self.width = self.text.get_width() + self.padding
             self.height = self.text.get_height() + self.padding
 
-        self.x = self.x - self.width // 2
-        self.y = self.y - self.height // 2
+        if not self.immutable_pos:
+            self.x = self.x - self.width // 2
+            self.y = self.y - self.height // 2
 
     def setNewText(self, text):
         self.str_text = text

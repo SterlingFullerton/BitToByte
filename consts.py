@@ -16,7 +16,7 @@ images = {
 screen_width = 375
 screen_height = 667
 
-click_cooldown = 30
+click_cooldown = 60 # 60 frames = 1 second
 
 menu_text_size = 24
 menu_padding = 30

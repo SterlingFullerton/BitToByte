@@ -22,7 +22,12 @@ skill_queue = []
 streak = 0
 all_questions = []
 
-pygame.display.set_caption("BIT to BYTE")
+# Not Joshes Globals
+num_combined = "00000"
+num_binary = 0
+num_final = random.randint(0, 31)
+
+pygame.display.set_caption("BitToByte: Discover Computers!")
 
 # Load Assets
 assets = {}
@@ -207,19 +212,89 @@ fb_buttons = {
             immutable_size=True
         ),
 }
-b1 = Button(
-    x=screen_width // 2,
-    y=screen_height // 2,
-    text="Multiple Choice",
-    text_size=24,
-    width=200,
-    height=50,
-    rounded=True,
-    radius=10,
-    border=True,
-    border_width=2,
-    padding=30
-)
+binary_conversion_buttons = {
+    "Button1":
+        Button(
+            x=cos[0],
+            y=cos[1],
+            text="Button1",
+            text_size=40,
+            rounded=True,
+            radius=10,
+            border=True,
+            border_width=2,
+            padding=45,
+            immutable_size=True,
+            immutable_pos=True
+        ),
+    "Button2":
+        Button(
+            x=cos[0],
+            y=cos[1],
+            text="Button2",
+            text_size=40,
+            rounded=True,
+            radius=10,
+            border=True,
+            border_width=2,
+            padding=45,
+            immutable_size=True,
+            immutable_pos=True
+        ),
+    "Button3":
+        Button(
+            x=cos[0],
+            y=cos[1],
+            text="Button3",
+            text_size=40,
+            rounded=True,
+            radius=10,
+            border=True,
+            border_width=2,
+            padding=45,
+            immutable_size=True,
+            immutable_pos=True
+        ),
+    "Button4":
+        Button(
+            x=cos[0],
+            y=cos[1],
+            text="Button4",
+            text_size=40,
+            rounded=True,
+            radius=10,
+            border=True,
+            border_width=2,
+            padding=45,
+            immutable_size=True,
+            immutable_pos=True
+        ),
+    "Button5":
+        Button(
+            x=cos[0],
+            y=cos[1],
+            text="Button5",
+            text_size=40,
+            rounded=True,
+            radius=10,
+            border=True,
+            border_width=2,
+            padding=45,
+            immutable_size=True,
+            immutable_pos=True
+        ),
+}
+back_button = Button(
+        x=50,
+        y=60,
+        text="Back",
+        text_size=24,
+        rounded=True,
+        radius=10,
+        border=True,
+        border_width=2,
+        padding=20
+    )
 
 def click_button(rectangle, button=[0]):
     # The default button list is a persistent list that will store the cooldown of the button
@@ -273,16 +348,16 @@ def skill_tree():
     for skill in skills.values():
         if skill.check_hover(pygame.mouse.get_pos()):
             skill.display_name(screen)
-        
 
-        questionNum = 1 #random.randint(0,1)
+        # questionNum = 1 #random.randint(0,1)
+        # if click_button(skill.circle):
+        #     current_screen = all_questions[questionNum][0]
+        #     question = all_questions[questionNum][1]
+        #     answers = [all_questions[questionNum][2],all_questions[questionNum][3],all_questions[questionNum][4],all_questions[questionNum][5]]
+        #     correct_answer = all_questions[questionNum][6]
+
         if click_button(skill.circle):
-            current_screen = all_questions[questionNum][0]
-            question = all_questions[questionNum][1]
-            answers = [all_questions[questionNum][2],all_questions[questionNum][3],all_questions[questionNum][4],all_questions[questionNum][5]]
-            correct_answer = all_questions[questionNum][6]
-
-        #if click_button(skill.circle):
+            current_screen = "binary_conversion"
          #   current_screen = "fill_in_the_blank"
           #  question = "What is the capital of France?"
            # answers = ["Paris", "London", "Berlin", "Madrid"]
@@ -363,29 +438,85 @@ def multiple_choice():
                 # skill_queue.append()
     pass
 
+def binary_conversion():
+    global current_screen, last_screen, num_binary, num_combined, num_final
 
-def tower_of_terry():
+    if last_screen != "binary_conversion":
+        # Set all buttons to 0
+        tempIndex = 0
+        for button in binary_conversion_buttons.values():
+            button.setNewText("0")
+            button.setSize(60, 60)
+            button.setNewPos(cos[0] + tempIndex * 65 - 160, cos[1])
+            tempIndex += 1
+
+    # Display Binary Conversion Buttons
+    n = 0
+    for button in binary_conversion_buttons.values():
+        button.draw(screen)
+            
+        # Check for button click
+        if click_button(button.rectangle):
+            button.setNewText("1" if button.str_text == "0" else "0")
+
+            num_combined = num_combined[:n] + button.str_text + num_combined[n + 1:]
+
+            # Convert the string num_combined to an integer
+            num_binary = int(num_combined, 2)
+
+            if num_binary == num_final:
+                print("Correct Answer")
+                # Set all buttons to green
+                for button in binary_conversion_buttons.values():
+                    button.border_color = colors["neon_green"]
+                    back_button.border_color = colors["neon_green"]
+            else:
+                # Set all buttons to grey
+                for button in binary_conversion_buttons.values():
+                    button.border_color = colors["grey_text"]
+                    back_button.border_color = colors["grey_text"]
+        
+        n += 1
+
+    # Display the current num_final
+    font = pygame.font.Font(None, 60)
+    number_label = font.render(f"{num_binary}", True, colors["grey_text"])
+    screen.blit(number_label, (screen_width // 2 - number_label.get_width() // 2, screen_height - 150))
+
+    # Lines from the edges of the binary digits to the num_final
+
+    # Left side
+    x = cos[0] + 0 * 65 - 160
+    y = cos[1] + 70
+    x2 = screen_width // 2 - number_label.get_width() // 2
+    y2 = screen_height - 160
+    pygame.draw.line(screen, colors["grey_text"], (x, y), (x2, y2), 2)
+
+    # Right side
+    x = cos[0] + 4 * 65 - 100
+    y = cos[1] + 70
+    x2 = screen_width // 2 + number_label.get_width() // 2
+    y2 = screen_height - 160
+    pygame.draw.line(screen, colors["grey_text"], (x, y), (x2, y2), 2)
+
     
-    pass
+    # Display Binary Conversion Question
+    font = pygame.font.Font(None, 30)
+    question_label = font.render(f"In binary, make the number...", True, colors["grey_text"])
+    screen.blit(question_label, (screen_width // 2 - question_label.get_width() // 2, screen_height // 6))
+    font = pygame.font.Font(None, 60)
+    number_label = font.render(f"{num_final}", True, colors["grey_text"])
+    screen.blit(number_label, (screen_width // 2 - number_label.get_width() // 2, screen_height // 6 + 50))
+    
+    # Back button
+    back_button.draw(screen)
+    if click_button(back_button.rectangle):
+        current_screen = "skill_tree"
 
 
 def robs_sorting_scheme():
 
     pass
-
-
-def drag_and_drop():
-    b1.draw(screen)
-
-    if click_button(b1.rectangle):
-        if b1.attached():
-            b1.detach()
-
-            # Then set the new "Correct" position for the button
-            # Probably with an anchor point set by intersection of a 
-            # rectangle
-        else:
-            b1.attach()
 
 def read_csv(file_path):
     with open(file_path, newline='') as file:
@@ -430,6 +561,9 @@ while running:
     elif current_screen == "multiple_choice":
         multiple_choice()
         last_screen = "multiple_choice"
+    elif current_screen == "binary_conversion":
+        binary_conversion()
+        last_screen = "binary_conversion"
     else:
         print("Invalid Screen")
         exit()
@@ -439,3 +573,5 @@ while running:
     clock.tick(60)
 
 pygame.quit()
+
+# Do a backflip
