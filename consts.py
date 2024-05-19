@@ -10,6 +10,7 @@ colors = {
 images = {
     "logo1": "assets/BITtoBYTE_Logo1.png",
     "background": "assets/background-1.png",
+    "eyeClosed" : "assets/EyeClosed.svg",
     "code": "assets/Code.svg",
 }
 

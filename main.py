@@ -212,6 +212,163 @@ fb_buttons = {
             immutable_size=True
         ),
 }
+
+robs_buttons = {
+    "Button1":
+        Button(
+            x=23,
+            y=60,
+            text="1",
+            text_size=24,
+            width=110,
+            height=125,
+            rounded=True,
+            radius=10,
+            border=True,
+            border_width=2,
+            padding=30,
+            icon = images['eyeClosed'],
+            index = 0,
+            immutable_size=True
+        ),
+    "Button2":
+        Button(
+            x=151,
+            y=60,
+            text="2",
+            text_size=24,
+            width=110,
+            height=125,
+            rounded=True,
+            radius=10,
+            border=True,
+            border_width=2,
+            padding=30,
+            icon = images['eyeClosed'],
+            index = 1,
+            immutable_size=True
+        ),
+    "Button3":
+        Button(
+            x=280,
+            y=60,
+            text="3",
+            text_size=24,
+            width=110,
+            height=125,
+            rounded=True,
+            radius=10,
+            border=True,
+            border_width=2,
+            padding=30,
+            icon = images['eyeClosed'],
+            index = 2,
+            immutable_size=True
+        ),
+    "Button4":
+        Button(
+            x=23,
+            y=205,
+            text="4",
+            text_size=24,
+            width=110,
+            height=125,
+            rounded=True,
+            radius=10,
+            border=True,
+            border_width=2,
+            padding=30,
+            icon = images['eyeClosed'],
+            index = 3,
+            immutable_size=True
+        ),
+    "Button5":
+        Button(
+            x=151,
+            y=205,
+            text="5",
+            text_size=24,
+            width=110,
+            height=125,
+            rounded=True,
+            radius=10,
+            border=True,
+            border_width=2,
+            padding=30,
+            icon = images['eyeClosed'],
+            index = 4,
+            immutable_size=True
+        ),
+    "Button6":
+        Button(
+            x=280,
+            y=205,
+            text="6",
+            text_size=24,
+            width=110,
+            height=125,
+            rounded=True,
+            radius=10,
+            border=True,
+            border_width=2,
+            padding=30,
+            icon = images['eyeClosed'],
+            index = 5,
+            immutable_size=True
+        ),
+    "Button7":
+        Button(
+            x=23,
+            y=350,
+            text="7",
+            text_size=24,
+            width=110,
+            height=125,
+            rounded=True,
+            radius=10,
+            border=True,
+            border_width=2,
+            padding=30,
+            icon = images['eyeClosed'],
+            index = 6,
+            immutable_size=True
+        ),
+    "Button8":
+        Button(
+            x=151,
+            y=350,
+            text="8",
+            text_size=24,
+            width=110,
+            height=125,
+            rounded=True,
+            radius=10,
+            border=True,
+            border_width=2,
+            padding=30,
+            icon = images['eyeClosed'],
+            index = 7,
+            immutable_size=True
+        ),
+    "Button9":
+        Button(
+            x=280,
+            y=350,
+            text="9",
+            text_size=24,
+            width=110,
+            height=125,
+            rounded=True,
+            radius=10,
+            border=True,
+            border_width=2,
+            padding=30,
+            icon = images['eyeClosed'],
+            index = 8,
+            immutable_size=True
+        ),
+}
+
 binary_conversion_buttons = {
     "Button1":
         Button(
@@ -357,7 +514,12 @@ def skill_tree():
         #     correct_answer = all_questions[questionNum][6]
 
         if click_button(skill.circle):
-            current_screen = "binary_conversion"
+            current_screen = all_questions[questionNum][0]
+            question = all_questions[questionNum][1]
+            answers = [all_questions[questionNum][2],all_questions[questionNum][3],all_questions[questionNum][4],all_questions[questionNum][5]]
+            correct_answer = all_questions[questionNum][6]
+
+        #if click_button(skill.circle):
          #   current_screen = "fill_in_the_blank"
           #  question = "What is the capital of France?"
            # answers = ["Paris", "London", "Berlin", "Madrid"]
@@ -438,80 +600,10 @@ def multiple_choice():
                 # skill_queue.append()
     pass
 
-def binary_conversion():
-    global current_screen, last_screen, num_binary, num_combined, num_final
 
-    if last_screen != "binary_conversion":
-        # Set all buttons to 0
-        tempIndex = 0
-        for button in binary_conversion_buttons.values():
-            button.setNewText("0")
-            button.setSize(60, 60)
-            button.setNewPos(cos[0] + tempIndex * 65 - 160, cos[1])
-            tempIndex += 1
-
-    # Display Binary Conversion Buttons
-    n = 0
-    for button in binary_conversion_buttons.values():
-        button.draw(screen)
-            
-        # Check for button click
-        if click_button(button.rectangle):
-            button.setNewText("1" if button.str_text == "0" else "0")
-
-            num_combined = num_combined[:n] + button.str_text + num_combined[n + 1:]
-
-            # Convert the string num_combined to an integer
-            num_binary = int(num_combined, 2)
-
-            if num_binary == num_final:
-                print("Correct Answer")
-                # Set all buttons to green
-                for button in binary_conversion_buttons.values():
-                    button.border_color = colors["neon_green"]
-                    back_button.border_color = colors["neon_green"]
-            else:
-                # Set all buttons to grey
-                for button in binary_conversion_buttons.values():
-                    button.border_color = colors["grey_text"]
-                    back_button.border_color = colors["grey_text"]
-        
-        n += 1
-
-    # Display the current num_final
-    font = pygame.font.Font(None, 60)
-    number_label = font.render(f"{num_binary}", True, colors["grey_text"])
-    screen.blit(number_label, (screen_width // 2 - number_label.get_width() // 2, screen_height - 150))
-
-    # Lines from the edges of the binary digits to the num_final
-
-    # Left side
-    x = cos[0] + 0 * 65 - 160
-    y = cos[1] + 70
-    x2 = screen_width // 2 - number_label.get_width() // 2
-    y2 = screen_height - 160
-    pygame.draw.line(screen, colors["grey_text"], (x, y), (x2, y2), 2)
-
-    # Right side
-    x = cos[0] + 4 * 65 - 100
-    y = cos[1] + 70
-    x2 = screen_width // 2 + number_label.get_width() // 2
-    y2 = screen_height - 160
-    pygame.draw.line(screen, colors["grey_text"], (x, y), (x2, y2), 2)
-
+def tower_of_terry():
     
-    # Display Binary Conversion Question
-    font = pygame.font.Font(None, 30)
-    question_label = font.render(f"In binary, make the number...", True, colors["grey_text"])
-    screen.blit(question_label, (screen_width // 2 - question_label.get_width() // 2, screen_height // 6))
-    font = pygame.font.Font(None, 60)
-    number_label = font.render(f"{num_final}", True, colors["grey_text"])
-    screen.blit(number_label, (screen_width // 2 - number_label.get_width() // 2, screen_height // 6 + 50))
-    
-    # Back button
-    back_button.draw(screen)
-    if click_button(back_button.rectangle):
-        current_screen = "skill_tree"
+    pass
 
 
 def robs_sorting_scheme():
@@ -561,9 +653,6 @@ while running:
     elif current_screen == "multiple_choice":
         multiple_choice()
         last_screen = "multiple_choice"
-    elif current_screen == "binary_conversion":
-        binary_conversion()
-        last_screen = "binary_conversion"
     else:
         print("Invalid Screen")
         exit()
