@@ -295,6 +295,161 @@ back_button = Button(
         border_width=2,
         padding=20
     )
+robs_buttons = {
+    "Button1":
+        Button(
+            x=23,
+            y=60,
+            text="1",
+            text_size=24,
+            width=110,
+            height=125,
+            rounded=True,
+            radius=10,
+            border=True,
+            border_width=2,
+            padding=30,
+            icon = images['eyeClosed'],
+            index = 0,
+            immutable_size=True
+        ),
+    "Button2":
+        Button(
+            x=151,
+            y=60,
+            text="2",
+            text_size=24,
+            width=110,
+            height=125,
+            rounded=True,
+            radius=10,
+            border=True,
+            border_width=2,
+            padding=30,
+            icon = images['eyeClosed'],
+            index = 1,
+            immutable_size=True
+        ),
+    "Button3":
+        Button(
+            x=280,
+            y=60,
+            text="3",
+            text_size=24,
+            width=110,
+            height=125,
+            rounded=True,
+            radius=10,
+            border=True,
+            border_width=2,
+            padding=30,
+            icon = images['eyeClosed'],
+            index = 2,
+            immutable_size=True
+        ),
+    "Button4":
+        Button(
+            x=23,
+            y=205,
+            text="4",
+            text_size=24,
+            width=110,
+            height=125,
+            rounded=True,
+            radius=10,
+            border=True,
+            border_width=2,
+            padding=30,
+            icon = images['eyeClosed'],
+            index = 3,
+            immutable_size=True
+        ),
+    "Button5":
+        Button(
+            x=151,
+            y=205,
+            text="5",
+            text_size=24,
+            width=110,
+            height=125,
+            rounded=True,
+            radius=10,
+            border=True,
+            border_width=2,
+            padding=30,
+            icon = images['eyeClosed'],
+            index = 4,
+            immutable_size=True
+        ),
+    "Button6":
+        Button(
+            x=280,
+            y=205,
+            text="6",
+            text_size=24,
+            width=110,
+            height=125,
+            rounded=True,
+            radius=10,
+            border=True,
+            border_width=2,
+            padding=30,
+            icon = images['eyeClosed'],
+            index = 5,
+            immutable_size=True
+        ),
+    "Button7":
+        Button(
+            x=23,
+            y=350,
+            text="7",
+            text_size=24,
+            width=110,
+            height=125,
+            rounded=True,
+            radius=10,
+            border=True,
+            border_width=2,
+            padding=30,
+            icon = images['eyeClosed'],
+            index = 6,
+            immutable_size=True
+        ),
+    "Button8":
+        Button(
+            x=151,
+            y=350,
+            text="8",
+            text_size=24,
+            width=110,
+            height=125,
+            rounded=True,
+            radius=10,
+            border=True,
+            border_width=2,
+            padding=30,
+            icon = images['eyeClosed'],
+            index = 7,
+            immutable_size=True
+        ),
+    "Button9":
+        Button(
+            x=280,
+            y=350,
+            text="9",
+            text_size=24,
+            width=110,
+            height=125,
+            rounded=True,
+            radius=10,
+            border=True,
+            border_width=2,
+            padding=30,
+            icon = images['eyeClosed'],
+            index = 8,
+            immutable_size=True
+        ),
+}
 
 def click_button(rectangle, button=[0]):
     # The default button list is a persistent list that will store the cooldown of the button
@@ -514,9 +669,25 @@ def binary_conversion():
         current_screen = "skill_tree"
 
 
-def robs_sorting_scheme():
+def robs_searching_scheme():
+    global cards
+    if last_screen != "robs_searching_scheme":
+        cards = [0] * 9
+        #Generate random cards with no duplicates.
+        for card in cards:
+            tempInt = random.randint(1,50)
+            while cards.count(tempInt) > 0:
+                tempInt = random.randint(1,50)
+            card = tempInt
+        cards.sort()
 
-    pass
+    for button in robs_buttons.values():
+        # Draw the buttons
+        button.draw(screen)
+    
+        if click_button(button.rectangle):
+            button.setNewText(str(cards[button.index]))
+            button.bg_color = colors['white']
 
 def read_csv(file_path):
     with open(file_path, newline='') as file:
@@ -564,6 +735,9 @@ while running:
     elif current_screen == "binary_conversion":
         binary_conversion()
         last_screen = "binary_conversion"
+    elif current_screen == "robs_searching_scheme":
+        robs_searching_scheme()
+        last_screen = "robs_searching_scheme"
     else:
         print("Invalid Screen")
         exit()
