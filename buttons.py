@@ -6,14 +6,14 @@ class Button:
             width=None, height=None,
             bg_color=colors["grey_bg"], text_color=colors["grey_text"], \
             rounded=False, radius=10, border=False, border_color=colors["grey_text"], \
-            border_width=1, padding=30, immutable_size=False, immutable_pos=False, icon=False, index=0):
+            border_width=1, padding=30, immutable_size=False, immutable_pos=False, \
+            icon=False, icon_size=18, icon_color=colors["grey_text"]):
         
         self.font = pygame.font.Font(None, text_size)
         self.text = self.font.render(text, True, text_color)
         self.icon = icon
-        self.index = index
-
-        self.immutable_size = immutable_size
+        self.icon_size = icon_size
+        self.icon_color = icon_color
 
         self.x = x - (self.text.get_width() + padding) // 2
         self.y = y - (self.text.get_height() + padding) // 2
@@ -30,6 +30,7 @@ class Button:
         self.border_width = border_width
         self.padding = padding
         self.immutable_pos = immutable_pos
+        self.immutable_size = immutable_size
 
         self.attached_to_mouse = False
 
@@ -88,10 +89,10 @@ class Button:
         if self.icon != False:
             # Icon (if any) is a loaded pygame image
             icon_rect = self.icon.get_rect()
-            self.icon = pygame.transform.scale(self.icon, (icon_rect.width // 2, icon_rect.height // 2))
-            screen.blit(self.icon, (
-                self.x - self.icon.get_width() // 2,
-                self.y - self.icon.get_height() // 2
+            icon = pygame.transform.scale(self.icon, (icon_rect.width // 2, icon_rect.height // 2))
+            screen.blit(icon, (
+                self.x + self.width // 2 - icon.get_width() // 2,
+                self.y + self.height // 2 - icon.get_height() // 2
             ))
 
         # Text

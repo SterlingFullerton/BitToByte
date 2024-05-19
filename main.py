@@ -20,16 +20,20 @@ running = True
 #Joshes Awesome Globals
 skill_queue = []
 streak = 0
+
+# For storing Questions from csv file #TODO Remove this
 all_questions = []
 
-# Not Joshes Globals
+# Default Globals
+#   Binary Conversion
 num_combined = "00000"
 num_binary = 0
 num_final = random.randint(0, 31)
-
+#   Multiple Choice
 mc_question = ""
 mc_answers = ""
 mc_correct_answer = ""
+#   Fill in the blank
 fb_question = ""
 fb_answers = ""
 fb_correct_answer = "" 
@@ -40,7 +44,6 @@ pygame.display.set_caption("BitToByte: Discover Computers!")
 assets = {}
 for image in images:
     assets[image] = pygame.image.load(images[image])
-
 
 # Scale the logo down
 logo1_rect = assets["logo1"].get_rect()
@@ -311,21 +314,19 @@ back_button = Button(
 bs_buttons = {}
 for i in range(9):
     x_offset = 35 + (i % 3) * 115
-    y_offset = 190 + (i // 3) * 130
+    y_offset = 210 + (i // 3) * 130
     bs_buttons[f"Button{i}"] = Button(
         x=x_offset,
         y=y_offset,
-        text="?",
+        text="",
         text_size=24,
         width=110,
         height=125,
-        rounded=True,
-        radius=10,
+        # rounded=True,
+        # radius=10,
         border=True,
         border_width=2,
-        padding=30,
         icon = assets['eyeClosed'],
-        index = i,
         immutable_size=True,
         immutable_pos=True
     )
@@ -560,26 +561,65 @@ def binary_conversion():
         current_screen = "skill_tree"
 
 def binary_search():
-    global current_screen, cards
+    global current_screen, cards, search_index, last_screen, guesses
     if last_screen != "binary_search":
-        cards = [0] * 9
+
+        # Reset the cards
+        for button in bs_buttons.values():
+            button.setNewText("")
+            button.bg_color = colors['grey_bg']
+            button.icon = assets['eyeClosed']
+
         # Generate 9 random numbers between 1 and 50
         # Make sure they are unique and sorted
+        cards = [0] * 9
         for i in range(len(cards)):
-            c = random.randint(1,50)
+            c = random.randint(1,100)
             while c in cards:
-                c = random.randint(1,50)
+                c = random.randint(1,100)
             cards[i] = c
         
         cards.sort()
 
+        search_index = random.randint(0, 8)
+
+        guesses = 3
+
+    
+    # Display Binary Search Question
+    font = pygame.font.Font(None, 30)
+    question_label1 = font.render(f"Using Binary Search", True, colors["grey_text"])
+    screen.blit(question_label1, (screen_width // 2 - question_label1.get_width() // 2, screen_height // 6 - 20))
+
+    question_label2 = font.render(f"Find the number {cards[search_index]}", True, colors["grey_text"])
+    screen.blit(question_label2, (screen_width // 2 - question_label2.get_width() // 2, screen_height // 6 + 10))
+
+    # Display Number of guesses left
+    font = pygame.font.Font(None, 30)
+    question_label3 = font.render(f"Guesses Left: {guesses}", True, colors["grey_text"])
+    screen.blit(question_label3, (screen_width // 2 - question_label3.get_width() // 2, screen_height // 6 + 40))
+
     for i, button in enumerate(bs_buttons.values()):
         # Draw the buttons
         button.draw(screen)
-    
+        # Also draw the label for the button
+        font = pygame.font.Font(None, 18)
+        number_label = font.render(f"{i+1}", True, colors["grey_text"])
+        screen.blit(number_label, (button.x + 10, button.y + 10))
+
         if click_button(button.rectangle):
+            if guesses <= 0:
+                print("Out of guesses")
+                bs_buttons[f"Button{search_index}"].border_color = colors['red']
+            elif i == search_index:
+                print("Correct Answer")
+                bs_buttons[f"Button{search_index}"].border_color = colors['neon_green']
+                back_button.border_color = colors["neon_green"]
+                skills["Binary Search"].complete()
+
             button.setNewText(str(cards[i]))
             button.bg_color = colors['white']
+            guesses -= 1
     
     # Back button
     back_button.draw(screen)
