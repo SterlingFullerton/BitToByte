@@ -348,6 +348,12 @@ def click_button(rectangle, button=[0]):
     
     return False
 
+def check_for_prerequisites():
+    global skills
+
+    for skill in skills.values():
+        skill.check_prerequisites(skills)
+
 def main_menu():
     global current_screen
 
@@ -448,6 +454,7 @@ def fill_in_the_blank():
     back_button.draw(screen)
     if click_button(back_button.rectangle):
         current_screen = "skill_tree"
+        check_for_prerequisites()
 
 def multiple_choice():
     global current_screen, last_screen, mc_question, mc_answers, mc_correct_answer
@@ -483,6 +490,7 @@ def multiple_choice():
     back_button.draw(screen)
     if click_button(back_button.rectangle):
         current_screen = "skill_tree"
+        check_for_prerequisites()
 
 def binary_conversion():
     global current_screen, last_screen, num_binary, num_combined, num_final
@@ -559,6 +567,7 @@ def binary_conversion():
     back_button.draw(screen)
     if click_button(back_button.rectangle):
         current_screen = "skill_tree"
+        check_for_prerequisites()
 
 def binary_search():
     global current_screen, cards, search_index, last_screen, guesses
@@ -625,6 +634,7 @@ def binary_search():
     back_button.draw(screen)
     if click_button(back_button.rectangle):
         current_screen = "skill_tree"
+        check_for_prerequisites()
 
 def read_csv(file_path):
     global mc_question, mc_answers, mc_correct_answer, fb_question, fb_answers, fb_correct_answer

@@ -47,13 +47,22 @@ class Skill:
         )
 
         # Border
-        self.circle = pygame.draw.circle(
-            surface=screen,
-            color=self.border_color,
-            center=(self.x, self.y),
-            radius=self.radius,
-            width=2
-        )
+        if not self.locked:
+            self.circle = pygame.draw.circle(
+                surface=screen,
+                color=self.border_color,
+                center=(self.x, self.y),
+                radius=self.radius,
+                width=2
+            )
+        else:
+            self.circle = pygame.draw.circle(
+                surface=screen,
+                color=colors["red"],
+                center=(self.x, self.y),
+                radius=self.radius,
+                width=2
+            )
 
         if self.icon != False:
             # Icon (if any) is a loaded pygame image
