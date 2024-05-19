@@ -28,7 +28,7 @@ all_questions = []
 #   Binary Conversion
 num_combined = "00000"
 num_binary = 0
-num_final = random.randint(0, 31)
+num_final = random.randint(1, 31)
 #   Multiple Choice
 mc_question = ""
 mc_answers = ""
