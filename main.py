@@ -665,21 +665,17 @@ read_csv("Questions.csv")
 current_screen = "main_menu"
 last_screen = ""
 
-# Questions and Answers
-# question = "What is the capital of France?"
-# answers = ["Paris", "London", "Berlin", "Madrid"]
-# correct_answer = "Paris"
-
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         
-        # if button c is pressed, unlock all skills
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_c:
-                for skill in skills.values():
-                    skill.unlock()
+        # Used for testing purposes
+        # # if button c is pressed, unlock all skills
+        # if event.type == pygame.KEYDOWN:
+        #     if event.key == pygame.K_c:
+        #         for skill in skills.values():
+        #             skill.unlock()
 
     # fill the screen with a color to wipe away anything from last frame
     screen.fill(colors["black"])
